@@ -23,6 +23,7 @@ import {
     from
         'react-native';
 
+import Detail from './detail'
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 const circleSize = 8;
 const circleMargin = 5;
@@ -168,6 +169,7 @@ export default class home extends Component {
         );
     }
 
+    //下拉刷新视图
     _renderRefresh() {
         return (
             <RefreshControl refreshing={this.state.isReFreshing}
@@ -178,6 +180,7 @@ export default class home extends Component {
         );
     }
 
+    //刷新回调
     _onRefresh = () => {
         this.setState({isReFreshing: true});
         setTimeout(() => {
@@ -190,16 +193,30 @@ export default class home extends Component {
             this.setState({isReFreshing: false, dataSource: ds.cloneWithRows(newProducts)})
         }, 2000);
     }
+    //分割线
     _renderSeparator = (sectionId, rowId, adjacentRowHighlighted) => {
         return (
             <View style={styles.diliver} key={'${sectionId}-${rowId}'}/>
         )
     }
 
-
+//listview的row视图
     _renderRow = (rowData, sectionId, rowId) => {
         return (
-            <TouchableHighlight onPress={() => Alert.alert('click scroll text', null, null)}>
+            <TouchableHighlight onPress={() => {
+                const {navigator}=this.props;
+                if(navigator){
+                    navigator.push({
+                        name:'detail',
+                        component:Detail,
+                        params:{
+                            productTitle:rowData.title
+                        }
+                    });
+                }
+            }
+
+            }>
                 <View style={styles.row}>
                     <Image source={{uri: rowData.image}} style={styles.productImage}/>
                     <View style={styles.productText}>

@@ -12,6 +12,7 @@ import {
     View
 } from 'react-native';
 import App from './app';
+import Main from './js/main';
 //
 // export default class ch01 extends Component {
 //   render() {
